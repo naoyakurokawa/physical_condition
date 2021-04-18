@@ -1,0 +1,58 @@
+version: '3'
+services:
+  user-db:
+    image: mysql:8.0
+    volumes:
+      # - ./initdb.d:/docker-entrypoint-initdb.d
+      # - db-store:/var/lib/mysql
+      # - ./logs:/var/log/mysql
+      # - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./api-user/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./api-user/mysql/data:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=user_service
+      - MYSQL_USER=user_service
+      - MYSQL_PASSWORD=user_service
+      - MYSQL_ROOT_PASSWORD=user_service
+      - TZ=Asia/Tokyo
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 13306:3306
+  envoy:
+    build:
+      context: ./proxy
+    ports:
+      - '8080:8080'
+  minio:
+    image: minio/minio:latest
+    container_name: 'minio-go-health'
+    ports:
+      - 9000:9000
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+    entrypoint: sh
+    command: -c "
+      mkdir -p /data/.minio.sys/buckets;
+      cp -r /policies/* /data/.minio.sys/;
+      cp -r /export/* /data/;
+      /usr/bin/minio server /data;"
+    volumes:
+      - ./minio/data:/data
+      - ./minio/export:/export
+      - ./minio/config:/root/.minio
+      - ./minio/policies:/policies
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 minio minio123) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/grpc-web-test;
+      /usr/bin/mc policy download myminio/grpc-web-test;
+      exit 0;
+      "
+volumes:
+  db-store:
