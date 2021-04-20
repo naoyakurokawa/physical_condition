@@ -1,7 +1,27 @@
 import Head from "next/head"
 import Link from "next/link"
+import { useRouter } from "next/router";
+import { useEffect,useState } from 'react'
+import { useCookies } from 'react-cookie';
 
 export default function Layout({children, title = "HP by Next.js"}){
+  const [cookies, setCookie, removeCookie] = useCookies(['login_token']);
+  const [isLogin, setIsLogin] = useState(true);
+  const router = useRouter();
+  const checkIsLogin = ()=>{
+    if(!cookies.login_token){
+      setIsLogin(false)
+    }else{
+      setIsLogin(true)
+    }
+  }
+  const logout = () =>{
+    removeCookie('login_token', { path: '/' });
+    router.push('/')
+  }
+  useEffect(()=>{
+    checkIsLogin();
+  },[])
   return (
     <div className="flex justify-center items-center flex-col min-h-screen text-gray-600 text-sm font-mono">
       <Head>
@@ -21,11 +41,13 @@ export default function Layout({children, title = "HP by Next.js"}){
                   Blog
                 </a>
               </Link>
-              <Link href="/contact-page">
-                <a className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
-                  Contact
-                </a>
-              </Link>
+              {isLogin ? (
+                <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded cursor-pointer" onClick={logout}>
+                  Logout
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           </div>
 

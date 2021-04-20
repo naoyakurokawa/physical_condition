@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import {CreateUserRequest,LoginRequest} from '../lib/user_pb';
 import {UserServiceClient} from '../lib/UserServiceClientPb';
-import Cookie from "universal-cookie";
+import { useCookies } from 'react-cookie';
 
-const cookie = new Cookie();
 
 export default function Auth() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [cookies, setCookie, removeCookie] = useCookies(['login_token']);
+  const metadata = {'login_token': cookies.login_token}
 
   const login = async () => {
     try {
@@ -19,18 +20,16 @@ export default function Auth() {
       request.setPassword(password);
       const client = new UserServiceClient("http://localhost:8080");
       const response = await client.login(request, {})
-      .then((res) => {
-        if (res.status === 400) {
+      .then((response) => {
+        if (response.status === 400) {
           throw "authentication failed";
-        } else if (res.ok) {
-          return res.json();
+        } else if(response.toObject().islogin){
+          setCookie('login_token', response.toObject().token, { path: '/' });
+          console.log("aaaaaa",cookies);
+          router.push('/mypage')
+          return
         }
       })
-      .then((data) => {
-        const options = { path: "/" };
-        // cookie.set("access_token", data.access, options);
-      });
-      router.push("/mypage");
     } catch (err) {
       alert(err.message);
       console.log(err);
