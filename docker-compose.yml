@@ -19,6 +19,25 @@ services:
       - SYS_NICE
     ports:
       - 13306:3306
+  post-db:
+    image: mysql:8.0
+    volumes:
+      # - ./initdb.d:/docker-entrypoint-initdb.d
+      # - db-store:/var/lib/mysql
+      # - ./logs:/var/log/mysql
+      # - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./api-post/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./api-post/mysql/data:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=post_service
+      - MYSQL_USER=post_service
+      - MYSQL_PASSWORD=post_service
+      - MYSQL_ROOT_PASSWORD=post_service
+      - TZ=Asia/Tokyo
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 23306:3306
   envoy:
     build:
       context: ./proxy

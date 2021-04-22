@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+service PostService {
+    rpc CreateBody (CreateBodyRequest) returns (CreateBodyResponse);
+}
+
+message Body {
+  int32 id    = 1;
+  string date = 2;
+  int32 user_id = 3;
+  int32 weight = 4;
+  int32 fat = 5;
+}
+
+message CreateBodyRequest {
+  int32 id    = 1;
+  string date = 2;
+  int32 user_id = 3;
+  int32 weight = 4;
+  int32 fat = 5;
+}
+
+message CreateBodyResponse {
+    string txt = 1;
+}

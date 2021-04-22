@@ -1,0 +1,11 @@
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  display: block;
+  width: 100%;
+  color: rgba(55, 65, 81, var(--tw-text-opacity));
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border-radius: 0.5rem;
+  border-color: rgba(209, 213, 219);
+}
