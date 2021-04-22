@@ -235,5 +235,45 @@ export class UserServiceClient {
     this.methodInfoLogin);
   }
 
+  methodInfoGetUserBySession = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.GetUserBySessionResponse,
+    (request: user_pb.GetUserBySessionRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.GetUserBySessionResponse.deserializeBinary
+  );
+
+  getUserBySession(
+    request: user_pb.GetUserBySessionRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.GetUserBySessionResponse>;
+
+  getUserBySession(
+    request: user_pb.GetUserBySessionRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.GetUserBySessionResponse) => void): grpcWeb.ClientReadableStream<user_pb.GetUserBySessionResponse>;
+
+  getUserBySession(
+    request: user_pb.GetUserBySessionRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.GetUserBySessionResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/UserService/GetUserBySession',
+        request,
+        metadata || {},
+        this.methodInfoGetUserBySession,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/UserService/GetUserBySession',
+    request,
+    metadata || {},
+    this.methodInfoGetUserBySession);
+  }
+
 }
 

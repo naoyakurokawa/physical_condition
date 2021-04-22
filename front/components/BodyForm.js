@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/router";
+import {GetUserBySessionRequest} from '../lib/user_pb';
+import {UserServiceClient} from '../lib/UserServiceClientPb';
 import {CreateBodyRequest} from '../lib/post_pb';
 import {PostServiceClient} from '../lib/PostServiceClientPb';
 import { useCookies } from 'react-cookie';
@@ -8,6 +10,7 @@ import DatePicker, { registerLocale } from "react-datepicker"
 import ja from 'date-fns/locale/ja';
 
 export default function BodyForm() {
+  const [userId, setUserId] = useState(0);
   const [weight, setBodyWeight] = useState("");
   const [fat, setBodyFat] = useState("");
   const router = useRouter();
@@ -22,22 +25,52 @@ export default function BodyForm() {
   }
   registerLocale('ja', ja);
 
+  const checkIsLogin = ()=>{
+    if(!cookies.login_token){
+      router.push('/')
+      return
+    }
+  }
+
+  const getLoginUser = async () => {
+    try {
+      const userRequest = new GetUserBySessionRequest();
+      const token = cookies.login_token;
+      userRequest.setToken(token);
+      const userClient = new UserServiceClient("http://localhost:8080");
+      const userResponse = await userClient.getUserBySession(userRequest);
+      setUserId(userResponse.toObject().userList[0].id);
+    } catch (err) {
+      alert(err);
+      console.log(err);
+    }
+  }
+
   const registBody = async (e) => {
     e.preventDefault();
     try {
       const request = new CreateBodyRequest();
-      request.setDate(registDate);
+      if(!registDate){
+        request.setDate(displayDate.toLocaleDateString());
+      }else{
+        request.setDate(registDate);
+      }
       request.setWeight(weight);
       request.setFat(fat);
-      request.setUserId(1);
+      request.setUserId(userId);
       console.log(request);
       const client = new PostServiceClient("http://localhost:8080");
-      const response = await client.createBody(request, {});
+      const response = await client.createBody(request, metadata);
     } catch (err) {
       alert(err);
       console.log(err);
     }
   };
+
+  useEffect(()=>{
+    checkIsLogin();
+    getLoginUser();
+  },[])
 
   return (
     <div className="bg-white rounded-lg shadow sm:max-w-md sm:w-full sm:mx-auto sm:overflow-hidden">

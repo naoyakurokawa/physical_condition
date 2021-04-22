@@ -202,6 +202,27 @@ func GetSessionByUuid(ctx context.Context, db *sqlx.DB, uuid string) ([]*pb.Sess
 	return session, nil
 }
 
+func GetUserBySession(ctx context.Context, db *sqlx.DB, token string) ([]*pb.User, error) {
+	var session []*pb.Session
+	q := `SELECT * FROM session WHERE Uuid = ?;`
+	err := db.SelectContext(ctx, &session, q, token)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	// fmt.Printf("%v", session[0].userid) //内容を表示する
+	// os.Exit(0)                          //処理を止める
+	// return session, nil
+	var user []*pb.User
+	q = `SELECT * FROM users WHERE ID = ?;`
+	err = db.SelectContext(ctx, &user, q, session[0].Userid)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return user, nil
+}
+
 //Validation関連のメソッド
 
 //必須チェック

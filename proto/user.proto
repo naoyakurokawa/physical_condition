@@ -6,6 +6,7 @@ service UserService {
     rpc GetUserById (GetUserByIdRequest) returns (GetUserByIdResponse);
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
     rpc Login (LoginRequest) returns (LoginResponse);
+    rpc GetUserBySession (GetUserBySessionRequest) returns (GetUserBySessionResponse);
 }
 
 message User {
@@ -66,4 +67,12 @@ message LoginResponse {
   int32 id = 1;
   string token = 2;
   bool isLogin = 3;
+}
+
+message GetUserBySessionRequest {
+  string token= 1;
+}
+
+message GetUserBySessionResponse {
+  repeated User user = 1;
 }

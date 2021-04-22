@@ -68,6 +68,13 @@ func (s *server) Login(ctx context.Context, r *pb.LoginRequest) (*pb.LoginRespon
 	return &pb.LoginResponse{Id: user_id, Token: uuid, IsLogin: true}, nil
 }
 
+// GetUserBySession
+func (s *server) GetUserBySession(ctx context.Context, r *pb.GetUserBySessionRequest) (*pb.GetUserBySessionResponse, error) {
+	var token = r.Token
+	var user, err = models.GetUserBySession(ctx, s.db, token)
+	return &pb.GetUserBySessionResponse{User: user}, err
+}
+
 func main() {
 	se := &server{}
 	var err error

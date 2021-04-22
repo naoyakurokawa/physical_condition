@@ -2,9 +2,9 @@ package models
 
 import (
 	"context"
+	"log"
 
 	// "fmt"
-	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -15,10 +15,18 @@ func CreateBody(ctx context.Context, db *sqlx.DB, request pb.CreateBodyRequest) 
 	//パスワードのハッシュ化
 	body := pb.Body{
 		Date:   request.GetDate(),
+		UserId: request.GetUserId(),
 		Weight: request.GetWeight(),
 		Fat:    request.GetFat(),
 	}
-	query := `INSERT INTO body (date, weight, fat) VALUES (:date, :weight, :fat);`
+	//メタデータ取得
+	// md, ok := metadata.FromIncomingContext(ctx)
+	// if ok == false {
+	// 	return -1, nil
+	// }
+	// log := md["login_token"][0]
+
+	query := `INSERT INTO body (date, userid, weight, fat) VALUES (:date, :userid, :weight, :fat);`
 	tx, err := db.Beginx()
 	_, err = tx.NamedExecContext(ctx, query, &body)
 	if err != nil {
