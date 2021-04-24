@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useState,useEffect } from "react";
 import { useRouter } from "next/router";
 import {GetUserBySessionRequest} from '../lib/user_pb';
@@ -10,7 +11,7 @@ import DatePicker, { registerLocale } from "react-datepicker"
 import ja from 'date-fns/locale/ja';
 
 export default function BodyForm() {
-  const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState("");
   const [weight, setBodyWeight] = useState("");
   const [fat, setBodyFat] = useState("");
   const router = useRouter();
@@ -48,22 +49,26 @@ export default function BodyForm() {
 
   const registBody = async (e) => {
     e.preventDefault();
-    try {
-      const request = new CreateBodyRequest();
-      if(!registDate){
-        request.setDate(displayDate.toLocaleDateString());
-      }else{
-        request.setDate(registDate);
+    const confirm = window.confirm('登録しても宜しいですか？');
+    if( confirm ) {
+      try {
+        const request = new CreateBodyRequest();
+        if(!registDate){
+          request.setDate(displayDate.toLocaleDateString());
+        }else{
+          request.setDate(registDate);
+        }
+        request.setWeight(weight);
+        request.setFat(fat);
+        request.setUserId(userId);
+        const client = new PostServiceClient("http://localhost:8080");
+        const response = await client.createBody(request, metadata);
+        router.push('/mypage')
+      } catch (err) {
+        alert(err.message);
       }
-      request.setWeight(weight);
-      request.setFat(fat);
-      request.setUserId(userId);
-      console.log(request);
-      const client = new PostServiceClient("http://localhost:8080");
-      const response = await client.createBody(request, metadata);
-    } catch (err) {
-      alert(err);
-      console.log(err);
+    }
+    else {
     }
   };
 
@@ -139,6 +144,14 @@ export default function BodyForm() {
           <p className="text-xs leading-5 text-gray-500">記録による日々の現状、変化の参考に。</p>
         </div>
       </div>
+      <div className="text-center">
+        <Link href="/mypage">
+          <button type="button" className="py-2 px-4 my-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-1/2 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+              マイページに戻る
+          </button>
+        </Link>
+      </div>
+
     </div>
   );
 }

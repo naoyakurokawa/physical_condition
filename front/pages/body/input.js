@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 
 export default function Home() {
   return (
-    <Layout title="Login">
+    <Layout title="身体情報入力">
     <BodyForm>
       </BodyForm>
     </Layout>
