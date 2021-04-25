@@ -31,6 +31,16 @@ func (s *server) CreateBody(ctx context.Context, r *pb.CreateBodyRequest) (*pb.C
 	return &pb.CreateBodyResponse{}, nil
 }
 
+// GetBodyList
+func (s *server) GetBodyList(ctx context.Context, r *pb.GetBodyListRequest) (*pb.GetBodyListResponse, error) {
+	var bodyList, err = models.GetBodyList(ctx, s.db, *r)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return &pb.GetBodyListResponse{BodyList: bodyList}, nil
+}
+
 func main() {
 	se := &server{}
 	var err error

@@ -75,5 +75,45 @@ export class PostServiceClient {
     this.methodInfoCreateBody);
   }
 
+  methodInfoGetBodyList = new grpcWeb.AbstractClientBase.MethodInfo(
+    post_pb.GetBodyListResponse,
+    (request: post_pb.GetBodyListRequest) => {
+      return request.serializeBinary();
+    },
+    post_pb.GetBodyListResponse.deserializeBinary
+  );
+
+  getBodyList(
+    request: post_pb.GetBodyListRequest,
+    metadata: grpcWeb.Metadata | null): Promise<post_pb.GetBodyListResponse>;
+
+  getBodyList(
+    request: post_pb.GetBodyListRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: post_pb.GetBodyListResponse) => void): grpcWeb.ClientReadableStream<post_pb.GetBodyListResponse>;
+
+  getBodyList(
+    request: post_pb.GetBodyListRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: post_pb.GetBodyListResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/PostService/GetBodyList',
+        request,
+        metadata || {},
+        this.methodInfoGetBodyList,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/PostService/GetBodyList',
+    request,
+    metadata || {},
+    this.methodInfoGetBodyList);
+  }
+
 }
 

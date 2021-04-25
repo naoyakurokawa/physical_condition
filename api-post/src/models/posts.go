@@ -17,7 +17,7 @@ import (
 func CreateBody(ctx context.Context, db *sqlx.DB, request pb.CreateBodyRequest) (int32, error) {
 	body := pb.Body{
 		Date:   request.GetDate(),
-		UserId: request.GetUserId(),
+		Userid: request.GetUserId(),
 		Weight: request.GetWeight(),
 		Fat:    request.GetFat(),
 	}
@@ -64,6 +64,18 @@ func CreateBody(ctx context.Context, db *sqlx.DB, request pb.CreateBodyRequest) 
 		return -1, err
 	}
 	return body.Id, nil
+}
+
+func GetBodyList(ctx context.Context, db *sqlx.DB, request pb.GetBodyListRequest) ([]*pb.Body, error) {
+	var bodylist []*pb.Body
+	q := "SELECT * FROM body WHERE userid = ? AND date LIKE ? ORDER BY date ASC"
+	err := db.SelectContext(ctx, &bodylist, q, request.GetUserId(), request.GetMonth()+"%")
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return bodylist, nil
+
 }
 
 //Validation関連のメソッド

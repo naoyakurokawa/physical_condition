@@ -9,14 +9,20 @@ export class Body extends jspb.Message {
   getDate(): string;
   setDate(value: string): Body;
 
-  getUserId(): number;
-  setUserId(value: number): Body;
+  getUserid(): number;
+  setUserid(value: number): Body;
 
   getWeight(): number;
   setWeight(value: number): Body;
 
   getFat(): number;
   setFat(value: number): Body;
+
+  getCreated(): string;
+  setCreated(value: string): Body;
+
+  getUpdated(): string;
+  setUpdated(value: string): Body;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Body.AsObject;
@@ -30,9 +36,11 @@ export namespace Body {
   export type AsObject = {
     id: number,
     date: string,
-    userId: number,
+    userid: number,
     weight: number,
     fat: number,
+    created: string,
+    updated: string,
   }
 }
 
@@ -85,6 +93,48 @@ export class CreateBodyResponse extends jspb.Message {
 export namespace CreateBodyResponse {
   export type AsObject = {
     txt: string,
+  }
+}
+
+export class GetBodyListRequest extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): GetBodyListRequest;
+
+  getMonth(): string;
+  setMonth(value: string): GetBodyListRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetBodyListRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetBodyListRequest): GetBodyListRequest.AsObject;
+  static serializeBinaryToWriter(message: GetBodyListRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetBodyListRequest;
+  static deserializeBinaryFromReader(message: GetBodyListRequest, reader: jspb.BinaryReader): GetBodyListRequest;
+}
+
+export namespace GetBodyListRequest {
+  export type AsObject = {
+    userId: number,
+    month: string,
+  }
+}
+
+export class GetBodyListResponse extends jspb.Message {
+  getBodylistList(): Array<Body>;
+  setBodylistList(value: Array<Body>): GetBodyListResponse;
+  clearBodylistList(): GetBodyListResponse;
+  addBodylist(value?: Body, index?: number): Body;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetBodyListResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetBodyListResponse): GetBodyListResponse.AsObject;
+  static serializeBinaryToWriter(message: GetBodyListResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetBodyListResponse;
+  static deserializeBinaryFromReader(message: GetBodyListResponse, reader: jspb.BinaryReader): GetBodyListResponse;
+}
+
+export namespace GetBodyListResponse {
+  export type AsObject = {
+    bodylistList: Array<Body.AsObject>,
   }
 }
 
