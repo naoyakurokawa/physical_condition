@@ -31,7 +31,7 @@ export default function Layout({children, title = "HP by Next.js"}){
         <nav className="bg-gray-800 w-screen">
           <div className="flex items-center pl-8 h-14">
             <div className="flex space-x-4">
-              <Link href="/">
+              {/* <Link href="/">
                 <a className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
                   Home
                 </a>
@@ -40,13 +40,15 @@ export default function Layout({children, title = "HP by Next.js"}){
                 <a className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
                   Blog
                 </a>
-              </Link>
+              </Link> */}
               {isLogin ? (
                 <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded cursor-pointer" onClick={logout}>
                   Logout
                 </p>
               ) : (
-                ""
+                <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded cursor-pointer">
+                  ようこそ
+                </p>
               )}
             </div>
           </div>

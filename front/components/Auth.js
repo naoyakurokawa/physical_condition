@@ -106,7 +106,7 @@ export default function Auth() {
               onClick={() => setIsLogin(!isLogin)}
               className="cursor-pointer font-medium text-gray hover:text-indigo-500"
             >
-              ログイン / 会員登録 切り替え
+              {isLogin ? "会員登録がまだの方はこちら" : "ログインに切り替え"}
             </span>
           </div>
         </div>
