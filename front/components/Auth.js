@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import {CreateUserRequest,LoginRequest} from '../lib/user_pb';
 import {UserServiceClient} from '../lib/UserServiceClientPb';
 import { useCookies } from 'react-cookie';
-import { StateContext } from "../context/StateContext";
-
 
 export default function Auth() {
   const router = useRouter();
