@@ -270,3 +270,41 @@ export namespace LoginResponse {
   }
 }
 
+export class GetUserBySessionRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetUserBySessionRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserBySessionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserBySessionRequest): GetUserBySessionRequest.AsObject;
+  static serializeBinaryToWriter(message: GetUserBySessionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserBySessionRequest;
+  static deserializeBinaryFromReader(message: GetUserBySessionRequest, reader: jspb.BinaryReader): GetUserBySessionRequest;
+}
+
+export namespace GetUserBySessionRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class GetUserBySessionResponse extends jspb.Message {
+  getUserList(): Array<User>;
+  setUserList(value: Array<User>): GetUserBySessionResponse;
+  clearUserList(): GetUserBySessionResponse;
+  addUser(value?: User, index?: number): User;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserBySessionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserBySessionResponse): GetUserBySessionResponse.AsObject;
+  static serializeBinaryToWriter(message: GetUserBySessionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserBySessionResponse;
+  static deserializeBinaryFromReader(message: GetUserBySessionResponse, reader: jspb.BinaryReader): GetUserBySessionResponse;
+}
+
+export namespace GetUserBySessionResponse {
+  export type AsObject = {
+    userList: Array<User.AsObject>,
+  }
+}
+

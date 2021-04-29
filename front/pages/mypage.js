@@ -3,7 +3,7 @@ import MyPage from '../components/MyPage';
 
 export default function Home() {
   return (
-    <Layout title="Login">
+    <Layout title="マイページ">
       <MyPage>
       </MyPage>
     </Layout>
