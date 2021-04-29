@@ -26,13 +26,6 @@ export default function BodyForm() {
   }
   registerLocale('ja', ja);
 
-  const checkIsLogin = ()=>{
-    if(!cookies.login_token){
-      router.push('/')
-      return
-    }
-  }
-
   const getLoginUser = async () => {
     try {
       const userRequest = new GetUserBySessionRequest();
@@ -73,7 +66,6 @@ export default function BodyForm() {
   };
 
   useEffect(()=>{
-    checkIsLogin();
     getLoginUser();
   },[])
 

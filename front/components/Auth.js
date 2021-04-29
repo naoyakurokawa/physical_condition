@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { useRouter } from "next/router";
 import {CreateUserRequest,LoginRequest} from '../lib/user_pb';
 import {UserServiceClient} from '../lib/UserServiceClientPb';
 import { useCookies } from 'react-cookie';
+import { StateContext } from "../context/StateContext";
 
 
 export default function Auth() {
@@ -11,7 +12,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies(['login_token']);
-  const metadata = {'login_token': cookies.login_token}
+  const metadata = {'login_token': cookies.login_token};
 
   const login = async () => {
     try {
@@ -25,7 +26,7 @@ export default function Auth() {
           throw "authentication failed";
         } else if(response.toObject().islogin){
           setCookie('login_token', response.toObject().token, { path: '/' });
-          console.log("aaaaaa",cookies);
+          localStorage.setItem('userId', response.toObject().id);
           router.push('/mypage')
           return
         }

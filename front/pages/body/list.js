@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 
 export default function List() {
   return (
-    <Layout title="身体情報入力">
+    <Layout title="身体情報一覧">
       <BodyList>
       </BodyList>
     </Layout>

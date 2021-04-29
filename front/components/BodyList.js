@@ -15,7 +15,7 @@ export default function BodyList() {
   const getBodyList = async (month) => {
     try {
       const postRequest = new GetBodyListRequest();
-      postRequest.setUserId(3);
+      postRequest.setUserId(localStorage.getItem("userId"));
       postRequest.setMonth(month);
       const postClient = new PostServiceClient("http://localhost:8080");
       const postResponse = await postClient.getBodyList(postRequest);
@@ -70,9 +70,8 @@ export default function BodyList() {
                 Object.keys(BodyList).map((key) => {
                   return (
                     <div className="relative flex flex-col items-center flex-grow pb-5 group">
-                      <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">$37,500</span>
-                      <div className={'relative flex justify-center w-full h-' + Math.round(BodyList[key].weight/10) + ' bg-indigo-200'}>{BodyList[key].weight}</div>
-                      <div className={'relative flex justify-center w-full h-' + BodyList[key].fat + ' bg-indigo-300'}>{BodyList[key].fat}</div>
+                      <div className={'relative flex justify-center w-full h-' + Math.round(BodyList[key].weight) + 'px bg-indigo-200'}>{BodyList[key].weight}</div>
+                      <div className={'relative flex justify-center w-full h-' + BodyList[key].fat + 'px bg-indigo-300'}>{BodyList[key].fat}</div>
                       <span className="absolute bottom-0 text-xs font-bold">{BodyList[key].date.slice(-2)}</span>
                     </div>
                   )
