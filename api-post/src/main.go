@@ -8,8 +8,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/naoyakurokawa/physical_condition/models"
-	pb "github.com/naoyakurokawa/physical_condition/pb"
+	"github.com/naoyakurokawa/physical_condition/api-post/models"
+	pb "github.com/naoyakurokawa/physical_condition/api-post/pb"
 	"google.golang.org/grpc"
 )
 

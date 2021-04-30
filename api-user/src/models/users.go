@@ -9,7 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	pb "github.com/naoyakurokawa/physical_condition/pb"
+	pb "github.com/naoyakurokawa/physical_condition/api-user/pb"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

@@ -9,7 +9,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	pb "github.com/naoyakurokawa/physical_condition/pb"
+	pb "github.com/naoyakurokawa/physical_condition/api-post/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

@@ -1,4 +1,4 @@
-module github.com/naoyakurokawa/physical_condition
+module github.com/naoyakurokawa/physical_condition/api-post
 
 go 1.16
 

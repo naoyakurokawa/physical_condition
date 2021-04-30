@@ -12,7 +12,7 @@ message Body {
   int32 weight = 4;
   int32 fat = 5;
   string created = 6;
-  string updated = 7;
+  optional string updated = 7;
 }
 
 message CreateBodyRequest {

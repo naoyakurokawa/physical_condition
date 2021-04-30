@@ -2,11 +2,14 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
@@ -296,8 +299,8 @@ proto.Body.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getUpdated();
-  if (f.length > 0) {
+  f = /** @type {string} */ (jspb.Message.getField(message, 7));
+  if (f != null) {
     writer.writeString(
       7,
       f
@@ -428,7 +431,25 @@ proto.Body.prototype.getUpdated = function() {
  * @return {!proto.Body} returns this
  */
 proto.Body.prototype.setUpdated = function(value) {
-  return jspb.Message.setProto3StringField(this, 7, value);
+  return jspb.Message.setField(this, 7, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.Body} returns this
+ */
+proto.Body.prototype.clearUpdated = function() {
+  return jspb.Message.setField(this, 7, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.Body.prototype.hasUpdated = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

@@ -24,6 +24,8 @@ export class Body extends jspb.Message {
   getUpdated(): string;
   setUpdated(value: string): Body;
 
+  getUpdatedCase(): Body.UpdatedCase;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Body.AsObject;
   static toObject(includeInstance: boolean, msg: Body): Body.AsObject;
@@ -41,6 +43,11 @@ export namespace Body {
     fat: number,
     created: string,
     updated: string,
+  }
+
+  export enum UpdatedCase { 
+    _UPDATED_NOT_SET = 0,
+    UPDATED = 7,
   }
 }
 
