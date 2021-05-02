@@ -1,12 +1,15 @@
-# Build Container
-FROM golang:alpine
-WORKDIR /go/src/github.com/naoyakurokawa/physical_condition/api-user
-COPY ./src* .
-RUN apk add --no-cache alpine-sdk
-RUN apk update
-RUN apk add git
-RUN go mod download
+FROM golang:latest as builder
+
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
-CMD ["go", "run", "main.go"]
+WORKDIR /go/src/github.com/naoyakurokawa/physical_condition/api-user
+COPY ./src* .
+RUN go build main.go
+
+# runtime image
+FROM alpine
+RUN apk add --no-cache ca-certificates
+COPY --from=builder /go/src/github.com/naoyakurokawa/physical_condition/api-user/main /main
+EXPOSE 9090
+CMD ["./main"]
