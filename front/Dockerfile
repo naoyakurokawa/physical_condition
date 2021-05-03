@@ -1,26 +1,20 @@
-# ビルド環境
-FROM node:13 as build-stage
-ARG API_ENDPOINT
-ARG CLOUDINARY_API_KEY
-ARG CLOUD_NAME
-
-ENV VUE_APP_API_ENDPOINT $API_ENDPOINT
-ENV VUE_APP_CLOUDINARY_API_KEY $CLOUDINARY_API_KEY
-ENV VUE_APP_CLOUD_NAME $CLOUD_NAME
-ENV VUE_APP_LOGIN_EMAIL testuser@test.com
-ENV VUE_APP_LOGIN_PASSWORD snd1231abc
-
+FROM node:alpine as build-stage
 WORKDIR /app
-COPY ./ramen_project/package*.json ./
-RUN npm install
-RUN npm run vue -v
-COPY ./ramen_project ./
+COPY ./src ./
+RUN npm install -g npm@7.11.2
+COPY ./src ./
 RUN npm run build
+EXPOSE 3000
+CMD [ "npm", "start" ]
 
 # 本番環境
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-COPY nginx_config/default.conf /etc/nginx/conf.d/default.conf
+# FROM nginx:alpine as production-stage
+# ビルド成果物のみをコピーしてやる
+# COPY --from=build-stage /app/package.json /usr/share/nginx/html
+# COPY --from=build-stage /app/package.json /usr/share/nginx/html
+# COPY --from=build-stage /app/.next /usr/share/nginx/html
+# COPY --from=build-stage /app/public /usr/share/nginx/html
+# COPY nginx_config/default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
-
+# EXPOSE 3000
+# CMD ["npm", "start"]
