@@ -1,2 +1,4 @@
 /logs
 .DS_Store
+api-post/src/.env
+api-user/src/.env
