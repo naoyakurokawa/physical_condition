@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/naoyakurokawa/physical_condition/api-user/models"
 	pb "github.com/naoyakurokawa/physical_condition/api-user/pb"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -78,7 +80,16 @@ func (s *server) GetUserBySession(ctx context.Context, r *pb.GetUserBySessionReq
 func main() {
 	se := &server{}
 	var err error
-	se.db, err = sqlx.Open("mysql", "root:user_service@tcp(127.0.0.1:13306)/user_service")
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	USER := os.Getenv("DB_USER")
+	PASS := os.Getenv("DB_PASS")
+	PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
+	DB_NAME := os.Getenv("DB_NAME")
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
+	se.db, err = sqlx.Open("mysql", CONNECT)
 	if err != nil {
 		log.Fatalln(err)
 	}

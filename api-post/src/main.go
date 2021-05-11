@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	"github.com/naoyakurokawa/physical_condition/api-post/models"
 	pb "github.com/naoyakurokawa/physical_condition/api-post/pb"
 	"google.golang.org/grpc"
@@ -44,7 +46,16 @@ func (s *server) GetBodyList(ctx context.Context, r *pb.GetBodyListRequest) (*pb
 func main() {
 	se := &server{}
 	var err error
-	se.db, err = sqlx.Open("mysql", "root:post_service@tcp(127.0.0.1:23306)/post_service")
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	USER := os.Getenv("DB_USER")
+	PASS := os.Getenv("DB_PASS")
+	PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
+	DB_NAME := os.Getenv("DB_NAME")
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DB_NAME
+	se.db, err = sqlx.Open("mysql", CONNECT)
 	if err != nil {
 		log.Fatalln(err)
 	}

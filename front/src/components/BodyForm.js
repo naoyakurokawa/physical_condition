@@ -31,7 +31,7 @@ export default function BodyForm() {
       const userRequest = new GetUserBySessionRequest();
       const token = cookies.login_token;
       userRequest.setToken(token);
-      const userClient = new UserServiceClient("http://localhost:8080");
+      const userClient = new UserServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
       const userResponse = await userClient.getUserBySession(userRequest);
       setUserId(userResponse.toObject().userList[0].id);
     } catch (err) {
@@ -54,7 +54,7 @@ export default function BodyForm() {
         request.setWeight(weight);
         request.setFat(fat);
         request.setUserId(userId);
-        const client = new PostServiceClient("http://localhost:8080");
+        const client = new PostServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
         const response = await client.createBody(request, metadata);
         router.push('/mypage')
       } catch (err) {

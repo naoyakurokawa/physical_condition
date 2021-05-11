@@ -13,54 +13,6 @@ export default function MyPage() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
-  const login = async () => {
-    try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create/`,
-        {
-          method: "POST",
-          body: JSON.stringify({ username: username, password: password }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          if (res.status === 400) {
-            throw "authentication failed";
-          } else if (res.ok) {
-            return res.json();
-          }
-        })
-        .then((data) => {
-          const options = { path: "/" };
-          cookie.set("access_token", data.access, options);
-        });
-      router.push("/main-page");
-    } catch (err) {
-      alert(err);
-    }
-  };
-
-  const authUser = async (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      login();
-    } else {
-      try {
-        const request = new CreateUserRequest();
-        request.setName(username);
-        request.setPassword(password);
-        const client = new UserServiceClient("http://localhost:8080");
-        const response = await client.createUser(request, {});
-        // login();
-      } catch (err) {
-        alert(err);
-        console.log(err);
-      }
-    }
-  };
-
   return (
   <div className="w-8/12 bg-white py-10">
     <div className="header flex items-end justify-between mb-12">
