@@ -17,7 +17,7 @@ export default function Auth() {
       const request = new LoginRequest();
       request.setName(username);
       request.setPassword(password);
-      const client = new UserServiceClient("http://localhost:8080");
+      const client = new UserServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
       const response = await client.login(request, {})
       .then((response) => {
         if (response.status === 400) {
@@ -44,7 +44,7 @@ export default function Auth() {
         const request = new CreateUserRequest();
         request.setName(username);
         request.setPassword(password);
-        const client = new UserServiceClient("http://localhost:8080");
+        const client = new UserServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
         const response = await client.createUser(request, {});
         login();
       } catch (err) {

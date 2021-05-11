@@ -17,7 +17,7 @@ export default function BodyList() {
       const postRequest = new GetBodyListRequest();
       postRequest.setUserId(localStorage.getItem("userId"));
       postRequest.setMonth(month);
-      const postClient = new PostServiceClient("http://localhost:8080");
+      const postClient = new PostServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
       const postResponse = await postClient.getBodyList(postRequest);
       setBodyList(postResponse.toObject().bodylistList);
     } catch (err) {
