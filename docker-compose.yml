@@ -2,6 +2,7 @@ version: '3'
 services:
   user-db:
     image: mysql:8.0
+    container_name: 'db-user'
     volumes:
       # - ./initdb.d:/docker-entrypoint-initdb.d
       # - db-store:/var/lib/mysql
@@ -21,6 +22,7 @@ services:
       - 13306:3306
   post-db:
     image: mysql:8.0
+    container_name: 'db-post'
     volumes:
       # - ./initdb.d:/docker-entrypoint-initdb.d
       # - db-store:/var/lib/mysql

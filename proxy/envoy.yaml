@@ -56,6 +56,9 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
+                      # 本番(CloudMapで定義したURL)
+                      # address: user.api_user
+                      # ローカル
                       address: host.docker.internal
                       port_value: 9090
     - name: PostService

@@ -80,10 +80,16 @@ func (s *server) GetUserBySession(ctx context.Context, r *pb.GetUserBySessionReq
 func main() {
 	se := &server{}
 	var err error
-	err = godotenv.Load()
+	if f, err := os.Stat("./.env"); os.IsNotExist(err) || f.IsDir() {
+		fmt.Println("ファイルは存在しません！")
+	} else {
+		err = godotenv.Load()
+	}
+
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	USER := os.Getenv("DB_USER")
 	PASS := os.Getenv("DB_PASS")
 	PROTOCOL := "tcp(" + os.Getenv("DB_ADDRESS") + ")"
