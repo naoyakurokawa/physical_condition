@@ -3,6 +3,7 @@ syntax = "proto3";
 service PostService {
     rpc CreateBody (CreateBodyRequest) returns (CreateBodyResponse);
     rpc GetBodyList (GetBodyListRequest) returns (GetBodyListResponse);
+    rpc CreateMeal (CreateMealRequest) returns (CreateMealResponse);
 }
 
 message Body {
@@ -13,6 +14,27 @@ message Body {
   int32 fat = 5;
   string created = 6;
   optional string updated = 7;
+}
+
+message Meal {
+  int32 id    = 1;
+  int32 userid = 2;
+  string date = 3;
+  string created = 4;
+  optional string updated = 5;
+}
+
+message Mealdetail {
+  int32 id                = 1;
+  int32 mealid            = 2;
+  string time             = 3;
+  string name             = 4;
+  int32 calorie           = 5;
+  int32 protein           = 6;
+  int32 carbohydrate      = 7;
+  int32 lipid             = 8;
+  string created          = 9;
+  optional string updated = 10;
 }
 
 message CreateBodyRequest {
@@ -34,4 +56,15 @@ message GetBodyListRequest {
 
 message GetBodyListResponse {
     repeated Body bodyList = 1;
+}
+
+message CreateMealRequest {
+  int32 id    = 1;
+  int32 userid = 2;
+  string date = 3;
+  repeated Mealdetail mealdetail = 4;
+}
+
+message CreateMealResponse {
+    string txt = 1;
 }
