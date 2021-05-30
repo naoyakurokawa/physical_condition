@@ -43,6 +43,16 @@ func (s *server) GetBodyList(ctx context.Context, r *pb.GetBodyListRequest) (*pb
 	return &pb.GetBodyListResponse{BodyList: bodyList}, nil
 }
 
+// CreateMeal
+func (s *server) CreateMeal(ctx context.Context, r *pb.CreateMealRequest) (*pb.CreateMealResponse, error) {
+	var _, err = models.CreateMeal(ctx, s.db, *r)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return &pb.CreateMealResponse{}, nil
+}
+
 func main() {
 	se := &server{}
 	var err error

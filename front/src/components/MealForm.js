@@ -44,30 +44,44 @@ export default function MealForm() {
     }
   }
 
+  const add = () => {
+    console.log(11);
+  }
+
   const registMeal = async (e) => {
     e.preventDefault();
     const confirm = window.confirm('登録しても宜しいですか？');
     if( confirm ) {
       try {
-        console.log(name);
+        const inputLen = name.length;
+        let mealDetail = new Array();
+        let mealDetailObj = new Object();
+        for(let i=0; i<inputLen; i++){
+          mealDetailObj = {
+            time         : time[i],
+            name         : name[i],
+            calorie      : calorie[i],
+            protein      : protein[i],
+            carbohydrate : carbohydrate[i],
+            lipid        : lipid[i]
+          }
+          mealDetail.push(mealDetailObj);
+        }
         const request = new CreateMealRequest();
+        alert(22);
         if(!registDate){
           request.setDate(displayDate.toLocaleDateString());
         }else{
           request.setDate(registDate);
         }
         request.setUserId(userId);
-        request.setTime(time);
-        request.setName(name);
-        request.setCalorie(calorie);
-        request.setProtein(protein);
-        request.setCarbohydrate(carbohydrate);
-        request.setLipid(lipid);
+        request.setMealdetail(mealDetail);
         const client = new PostServiceClient(`${process.env.NEXT_PUBLIC_BASE_URL}:8080`);
         const response = await client.createMeal(request, metadata);
         router.push('/mypage')
       } catch (err) {
         alert(err.message);
+        console.log(err.message);
       }
     }
     else {
@@ -91,6 +105,7 @@ export default function MealForm() {
                     selected={displayDate}
                     onChange={handleChange}
                     dateFormat="yyyy年MM月dd日"
+                    required
                   />
                 </div>
               </div>
@@ -98,9 +113,9 @@ export default function MealForm() {
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
-              </div>
-              <div className="relative flex justify-center text-sm leading-5">
-                <span className="px-2 text-gray-500 bg-white"> 日々の食事情報を記録 </span>
+                <div className="relative flex justify-center text-sm leading-5">
+                  <span className="px-2 text-gray-500 bg-white"> 日々の食事情報を記録 </span>
+                </div>
               </div>
               <div className="w-full">
                 <div className="relative">
@@ -109,8 +124,9 @@ export default function MealForm() {
                     name="time[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="時間"
+                    required
                     onChange={(e) => {
-                      setTime(e.target.value);
+                      setTime([...time, e.target.value]);
                     }}
                   />
                 </div>
@@ -122,6 +138,7 @@ export default function MealForm() {
                     name="name[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="食事名"
+                    required
                     onBlur={(e) => {
                       // setName(e.target.value);
                       setName([...name, e.target.value]);
@@ -136,8 +153,9 @@ export default function MealForm() {
                     name="calorie[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="カロリー(kcal)"
-                    onChange={(e) => {
-                      setCalorie(e.target.value);
+                    required
+                    onBlur={(e) => {
+                      setCalorie([...calorie, e.target.value]);
                     }}
                   />
                 </div>
@@ -149,8 +167,9 @@ export default function MealForm() {
                     name="protein[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="タンパク質(g)"
-                    onChange={(e) => {
-                      setProtein(e.target.value);
+                    required
+                    onBlur={(e) => {
+                      setProtein([...protein, e.target.value]);
                     }}
                   />
                 </div>
@@ -162,8 +181,9 @@ export default function MealForm() {
                     name="carbohydrate[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="炭水化物(g)"
-                    onChange={(e) => {
-                      setCarbohydrate(e.target.value);
+                    required
+                    onBlur={(e) => {
+                      setCarbohydrate([...carbohydrate, e.target.value]);
                     }}
                   />
                 </div>
@@ -175,25 +195,114 @@ export default function MealForm() {
                     name="lipid[]"
                     className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="脂質(g)"
-                    onChange={(e) => {
-                      setLipid(e.target.value);
+                    required
+                    onBlur={(e) => {
+                      setLipid([...lipid, e.target.value]);
                     }}
                   />
                 </div>
               </div>
-              <div className="w-full">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="name[]"
-                    className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="食事名"
-                    onBlur={(e) => {
-                      setName([...name, e.target.value]);
-                      // setName(e.target.value);
-                    }}
-                  />
+              <div id="addForm">
+                <div className="relative mt-6 mb-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm leading-5">
+                    <span className="px-2 text-gray-500 bg-white"> 追加 </span>
+                  </div>
                 </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="time"
+                      name="time[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="時間"
+                      required
+                      onChange={(e) => {
+                        setTime([...time, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="name[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="食事名"
+                      required
+                      onBlur={(e) => {
+                        setName([...name, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="calorie[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="カロリー(kcal)"
+                      required
+                      onBlur={(e) => {
+                        setCalorie([...calorie, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="protein[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="タンパク質(g)"
+                      required
+                      onBlur={(e) => {
+                        setProtein([...protein, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="carbohydrate[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="炭水化物(g)"
+                      required
+                      onBlur={(e) => {
+                        setCarbohydrate([...carbohydrate, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="w-full mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="lipid[]"
+                      className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      placeholder="脂質(g)"
+                      required
+                      onBlur={(e) => {
+                        setLipid([...lipid, e.target.value]);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="relative flex justify-center text-sm leading-5">
+                <span
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-full cursor-pointer"
+                  onClick={() => add()}
+                >
+                  ＋
+                </span>
               </div>
               <div>
                 <span className="block w-full rounded-md shadow-sm">

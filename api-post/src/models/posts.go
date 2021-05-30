@@ -2,7 +2,9 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	// "fmt"
@@ -76,6 +78,46 @@ func GetBodyList(ctx context.Context, db *sqlx.DB, request pb.GetBodyListRequest
 	}
 	return bodylist, nil
 
+}
+
+func CreateMeal(ctx context.Context, db *sqlx.DB, request pb.CreateMealRequest) (int32, error) {
+	meal := pb.Meal{
+		Userid: request.GetUserid(),
+		Date:   request.GetDate(),
+	}
+
+	query := `INSERT INTO meal (date, userid) VALUES (:date, :userid);`
+	tx, err := db.Beginx()
+	_, err = tx.NamedExecContext(ctx, query, &meal)
+	if err != nil {
+		log.Printf("error : %s", err)
+		// エラーが発生した場合はロールバックします。
+		rollbackErr := tx.Rollback()
+		if rollbackErr != nil {
+			return -1, rollbackErr
+		}
+		// エラー内容を返却します。
+		return -1, err
+	}
+
+	mealdetailArr := request.GetMealdetail()
+
+	fmt.Printf("%v", mealdetailArr) //内容を表示する
+	os.Exit(0)                      //処理を止める
+
+	// mealdetail := pb.Mealdetail{
+	// 	Mealid: request.GetMealid(),
+	// 	Time: request.GetTime(),
+	// 	Name: request.GetName(),
+	// 	Calorie: request.GetCalorie(),
+	// 	Date:   request.GetDate()
+	// }
+
+	err = tx.Commit()
+	if err != nil {
+		return -1, err
+	}
+	return meal.Id, nil
 }
 
 //Validation関連のメソッド

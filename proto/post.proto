@@ -7,20 +7,20 @@ service PostService {
 }
 
 message Body {
-  int32 id    = 1;
-  string date = 2;
-  int32 userid = 3;
-  int32 weight = 4;
-  int32 fat = 5;
-  string created = 6;
+  int32 id                = 1;
+  string date             = 2;
+  int32 userid            = 3;
+  int32 weight            = 4;
+  int32 fat               = 5;
+  string created          = 6;
   optional string updated = 7;
 }
 
 message Meal {
-  int32 id    = 1;
-  int32 userid = 2;
-  string date = 3;
-  string created = 4;
+  int32 id                = 1;
+  int32 userid            = 2;
+  string date             = 3;
+  string created          = 4;
   optional string updated = 5;
 }
 
@@ -38,11 +38,11 @@ message Mealdetail {
 }
 
 message CreateBodyRequest {
-  int32 id    = 1;
-  string date = 2;
+  int32 id      = 1;
+  string date   = 2;
   int32 user_id = 3;
-  int32 weight = 4;
-  int32 fat = 5;
+  int32 weight  = 4;
+  int32 fat     = 5;
 }
 
 message CreateBodyResponse {
@@ -51,7 +51,7 @@ message CreateBodyResponse {
 
 message GetBodyListRequest {
     int32 user_id = 1;
-    string month = 2;
+    string month  = 2;
 }
 
 message GetBodyListResponse {
@@ -59,9 +59,9 @@ message GetBodyListResponse {
 }
 
 message CreateMealRequest {
-  int32 id    = 1;
-  int32 userid = 2;
-  string date = 3;
+  int32 id                       = 1;
+  int32 userid                   = 2;
+  string date                    = 3;
   repeated Mealdetail mealdetail = 4;
 }
 
